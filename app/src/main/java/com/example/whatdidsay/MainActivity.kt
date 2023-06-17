@@ -1,6 +1,7 @@
 package com.example.whatdidsay
 
 import HadithRepository
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,6 +16,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var viewModel: HadithViewModel
 
+    @SuppressLint("StateFlowValueCalledInComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,5 +35,4 @@ class MainActivity : ComponentActivity() {
     }
 
 }
-
 
