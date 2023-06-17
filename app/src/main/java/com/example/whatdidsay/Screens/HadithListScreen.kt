@@ -14,7 +14,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -50,12 +52,15 @@ fun HadithCard(hadith: Hadith) {
         )
     }
 }
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearchExecute: () -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     TextField(
         value = query,
         onValueChange = onQueryChange,
@@ -65,7 +70,10 @@ fun SearchBar(
             imeAction = ImeAction.Search
         ),
         keyboardActions = KeyboardActions(
-            onSearch = { onSearchExecute() }
+            onSearch = {
+                onSearchExecute()
+                keyboardController?.hide() // This will hide the keyboard
+            }
         ),
         modifier = Modifier.fillMaxWidth()
     )
