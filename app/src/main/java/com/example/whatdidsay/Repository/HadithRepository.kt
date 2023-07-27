@@ -1,5 +1,8 @@
 import android.content.Context
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.whatdidsay.DataBase.AppDatabase
 import com.example.whatdidsay.DataBase.HadithDao
 import com.example.whatdidsay.Models.Hadith
@@ -20,15 +23,23 @@ class HadithRepository(private val context: Context) {
         scope.launch { initializeDatabase() }
     }
 
-    val allHadiths: Flow<List<Hadith>> = hadithDao.getAllHadiths()
+    fun getAllHadiths(): Flow<PagingData<Hadith>> {
+        return Pager(PagingConfig(pageSize = 20)) {
+            hadithDao.getAllHadiths()
+        }.flow
+    }
+
+    fun searchDatabase(searchQuery: String): Flow<PagingData<Hadith>> {
+        return Pager(PagingConfig(pageSize = 20)) {
+            hadithDao.searchDatabase(searchQuery)
+        }.flow
+    }
 
     suspend fun insert(hadith: Hadith) = hadithDao.insert(hadith)
 
     suspend fun deleteAllHadiths() {
         hadithDao.deleteAllHadiths()
     }
-
-    fun searchDatabase(searchQuery: String): Flow<List<Hadith>> = hadithDao.searchHadiths("%$searchQuery%")
 
     suspend fun initializeDatabase() {
         Log.d("HadithRepository", "Initializing database")  // Log when this function is called
@@ -61,5 +72,4 @@ class HadithRepository(private val context: Context) {
             Log.d("HadithRepository", "Inserted Hadith: $hadith")  // Log each Hadith as it's inserted into the database
         }
     }
-
 }
