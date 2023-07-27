@@ -22,13 +22,7 @@ class HadithViewModel(private val repository: HadithRepository) : ViewModel() {
     val searchResults: StateFlow<PagingData<Hadith>> = _searchResults
     val allHadiths: StateFlow<PagingData<Hadith>> = _allHadiths
 
-    init {
-        viewModelScope.launch {
-            repository.getAllHadiths().collectLatest { pagingData ->
-                _allHadiths.value = pagingData
-            }
-        }
-    }
+
 
     fun insert(hadith: Hadith) = viewModelScope.launch {
         repository.insert(hadith)

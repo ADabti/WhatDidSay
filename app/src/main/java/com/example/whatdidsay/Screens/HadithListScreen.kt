@@ -29,7 +29,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 @Composable
 fun HadithListScreen(viewModel: HadithViewModel) {
     val query = remember { mutableStateOf("") }
-    val allHadiths = viewModel.allHadiths.collectAsLazyPagingItems()
     val searchResults = viewModel.searchResults.collectAsLazyPagingItems()
 
     Column {
@@ -38,10 +37,8 @@ fun HadithListScreen(viewModel: HadithViewModel) {
             onQueryChange = { newQuery -> query.value = newQuery },
             onSearchExecute = { viewModel.searchHadiths(query.value) }
         )
-        val lazyHadiths = when {
-            query.value.isBlank() -> allHadiths
-            else -> searchResults
-        }
+
+        val lazyHadiths = searchResults
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(lazyHadiths.itemCount) { index ->

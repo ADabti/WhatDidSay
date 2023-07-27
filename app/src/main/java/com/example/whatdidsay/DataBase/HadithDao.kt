@@ -10,7 +10,7 @@ interface HadithDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(hadith: Hadith)
 
-    @Query("SELECT * FROM hadith_table WHERE keywords LIKE :searchQuery")
+    @Query("SELECT * FROM hadith_table WHERE keywords LIKE '%' || :searchQuery || '%'")
     fun searchDatabase(searchQuery: String): PagingSource<Int, Hadith>
 
     @Query("SELECT COUNT(*) FROM hadith_table")

@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             WhatDidSayTheme {
-              //  viewModel.deleteAllHadiths()
+               // viewModel.deleteAllHadiths()
                 Log.d("hell", viewModel.allHadiths.value.toString())
                 HadithListScreen(viewModel)
 
